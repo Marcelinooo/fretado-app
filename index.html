@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linhas de Fretado | Premium</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #0054a6;
+      --secondary: #ffd700;
+      --dark: #003366;
+      --light: #f8f9fa;
+      --accent: #fff159;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, var(--light) 0%, #e6f0ff 100%);
+      min-height: 100vh;
+      color: #333;
+    }
+    
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+      color: white;
+      text-align: center;
+      padding: 25px 0;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    header::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--secondary), rgba(255, 215, 0, 0.5));
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
+    
+    .lines-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .app-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 40px;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .download-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px 25px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      color: white;
+    }
+    
+    .download-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .download-btn i {
+      margin-right: 10px;
+      font-size: 1.5rem;
+    }
+    
+    .playstore {
+      background: linear-gradient(135deg, #0f9d58 0%, #1e8e3e 100%);
+    }
+    
+    .appstore {
+      background: linear-gradient(135deg, #007AFF 0%, #0A59C5 100%);
+    }
+    
+    .contact-btn {
+      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    }
+    
+    .line-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 15px rgba(0, 84, 166, 0.1);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .line-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+    
+    .line-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 20px rgba(0, 84, 166, 0.15);
+    }
+    
+    .line-card:hover::before {
+      opacity: 1;
+    }
+    
+    .line-card:hover .line-number {
+      color: white;
+    }
+    
+    .line-card:hover .line-icon {
+      transform: scale(1.1);
+      color: var(--secondary);
+    }
+    
+    .line-number {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-align: center;
+      padding: 20px 10px 10px;
+      transition: color 0.3s ease;
+    }
+    
+    .line-icon {
+      display: block;
+      text-align: center;
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 15px;
+      transition: all 0.3s ease;
+    }
+    
+    .line-details {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(5px);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    
+    .line-details.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    
+    .detail-card {
+      background: white;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      transform: translateY(20px);
+      transition: transform 0.4s ease;
+    }
+    
+    .line-details.active .detail-card {
+      transform: translateY(0);
+    }
+    
+    .detail-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+      color: white;
+      padding: 25px;
+      text-align: center;
+      position: relative;
+    }
+    
+    .detail-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+    
+    .detail-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(255, 255, 255, 0.2);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .detail-close:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: rotate(90deg);
+    }
+    
+    .detail-content {
+      padding: 30px;
+    }
+    
+    .action-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 84, 166, 0.2);
+    }
+    
+    .action-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(0, 84, 166, 0.3);
+    }
+    
+    .action-button i {
+      margin-right: 10px;
+      font-size: 1.2rem;
+    }
+    
+    .whatsapp-btn {
+      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+      box-shadow: 0 4px 8px rgba(37, 211, 102, 0.3);
+    }
+    
+    .whatsapp-btn:hover {
+      box-shadow: 0 8px 15px rgba(37, 211, 102, 0.4);
+    }
+    
+    .map-btn {
+      background: linear-gradient(135deg, #4285F4 0%, #3367D6 100%);
+      box-shadow: 0 4px 8px rgba(66, 133, 244, 0.3);
+    }
+    
+    .map-btn:hover {
+      box-shadow: 0 8px 15px rgba(66, 133, 244, 0.4);
+    }
+    
+    .back-btn {
+      background: #6c757d;
+      box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+      cursor: pointer;
+    }
+    
+    .back-btn:hover {
+      box-shadow: 0 8px 15px rgba(108, 117, 125, 0.4);
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .container {
+      animation: fadeIn 0.6s ease forwards;
+    }
+    
+    @media (max-width: 600px) {
+      .lines-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      }
+      
+      .line-number {
+        font-size: 1.5rem;
+      }
+      
+      .line-icon {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header id="main-header">
+    <div class="logo">Linhas de Fretado</div>
+  </header>
+  
+  <div class="container">
+    <div class="lines-grid" id="lines-list">
+      <!-- Linhas serão adicionadas via JavaScript -->
+    </div>
+    
+    <div class="app-buttons">
+      <a href="https://play.google.com/store/search?q=FRETAD%C3%83O&c=apps&hl=pt_BR" class="download-btn playstore" target="_blank">
+        <i class="fab fa-google-play"></i> Baixar para Android
+      </a>
+      
+      <a href="https://apps.apple.com/br/app/fretad%C3%A3o/id958725031" class="download-btn appstore" target="_blank">
+        <i class="fab fa-apple"></i> Baixar para iPhone
+      </a>
+      
+      <a href="https://wa.me/5511996867473" class="download-btn contact-btn" target="_blank">
+        <i class="fab fa-whatsapp"></i> Contato Fretadão
+      </a>
+    </div>
+  </div>
+  
+  <div class="line-details" id="line-details">
+    <div class="detail-card">
+      <div class="detail-header">
+        <div class="detail-title" id="line-title"></div>
+        <div class="detail-close" id="close-details">
+          <i class="fas fa-times"></i>
+        </div>
+      </div>
+      <div class="detail-content">
+        <a class="action-button whatsapp-btn" id="whatsapp-link" target="_blank">
+          <i class="fab fa-whatsapp"></i> Grupo do WhatsApp
+        </a>
+        <a class="action-button map-btn" id="map-link" target="_blank">
+          <i class="fas fa-map-marked-alt"></i> Ver Trajeto
+        </a>
+        <div class="action-button back-btn" id="back-button">
+          <i class="fas fa-arrow-left"></i> Voltar
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Dados das linhas
+    const linesData = {
+      '6517': {
+        whatsapp: 'https://chat.whatsapp.com/CwBxAXs530J6kWmsyRy5Y3?mode=ac_t',
+        icon: 'bus'
+      },
+      '6518': {
+        whatsapp: 'https://chat.whatsapp.com/CO5qY99AWlWBYmQ78VTHE4',
+        icon: 'bus'
+      },
+      '6519': {
+        whatsapp: 'https://chat.whatsapp.com/IHvPbrPurpTC0iKbZvvbCq?mode=ac_t',
+        icon: 'bus'
+      },
+      '6523': {
+        whatsapp: 'https://chat.whatsapp.com/EHjGgDuVX3aALnJMcn31MY?mode=ac_t',
+        icon: 'bus'
+      },
+      '6543': {
+        whatsapp: 'https://chat.whatsapp.com/BsHr4OdPJv51afXS0pw3dM',
+        icon: 'bus'
+      },
+      '6544': {
+        whatsapp: 'https://chat.whatsapp.com/DoACBzZgT5uJ1hAvOR5YbQ?mode=ac_t',
+        icon: 'bus'
+      },
+      '6564': {
+        whatsapp: 'https://chat.whatsapp.com/EPXKvnaxlFiCIhKysjkrbC?mode=ac_t',
+        icon: 'bus'
+      }
+    };
+
+    // Elementos da página
+    const linesList = document.getElementById('lines-list');
+    const lineDetails = document.getElementById('line-details');
+    const lineTitle = document.getElementById('line-title');
+    const whatsappLink = document.getElementById('whatsapp-link');
+    const mapLink = document.getElementById('map-link');
+    const backButton = document.getElementById('back-button');
+    const closeDetails = document.getElementById('close-details');
+
+    // Cria os cards das linhas
+    function createLineCards() {
+      linesList.innerHTML = '';
+      
+      Object.keys(linesData).forEach(lineNumber => {
+        const line = linesData[lineNumber];
+        
+        const lineCard = document.createElement('div');
+        lineCard.className = 'line-card';
+        lineCard.innerHTML = `
+          <div class="line-number">Linha ${lineNumber}</div>
+          <i class="fas fa-${line.icon} line-icon"></i>
+        `;
+        
+        lineCard.addEventListener('click', () => showLineDetails(lineNumber));
+        linesList.appendChild(lineCard);
+      });
+    }
+
+    // Mostra os detalhes de uma linha
+    function showLineDetails(lineNumber) {
+      const lineData = linesData[lineNumber];
+      
+      lineTitle.textContent = `Linha ${lineNumber}`;
+      whatsappLink.href = lineData.whatsapp;
+      mapLink.href = `https://www.fretadao.com.br/fretado/${lineNumber}#modal-iframe`;
+      
+      lineDetails.classList.add('active');
+    }
+
+    // Volta para a lista de linhas
+    function showLinesList() {
+      lineDetails.classList.remove('active');
+    }
+
+    // Event Listeners
+    backButton.addEventListener('click', showLinesList);
+    closeDetails.addEventListener('click', showLinesList);
+
+    // Inicializa a página
+    createLineCards();
+  </script>
+</body>
+</html>
