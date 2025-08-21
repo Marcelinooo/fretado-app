@@ -27,7 +27,7 @@
             max-width: 400px;
             height: 80vh;
             background-color: #fff;
-            border-radius: 极2px;
+            border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             display: flex;
@@ -51,7 +51,7 @@
             color: #2d3277;
             font-size: 18px;
             cursor: pointer;
-            margin-right: 5px;
+            margin-right: 5极;
             display: none;
         }
         
@@ -78,7 +78,7 @@
             padding: 16px;
             overflow-y: auto;
             background-color: #ece5dd;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none极 fill-rule='evenodd'%3E%3Cg fill='%232d3277' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4极4h2v-4h4v-2H6zM6 4V0H4v4H0v2极4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232d3277极 fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4极4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
             display: flex;
             flex-direction: column;
         }
@@ -107,7 +107,7 @@
         }
         
         .sent {
-            background-color: #e3f2fd;
+            background-color: #e3极2fd;
             align-self: flex-end;
             border-top-right-radius: 5px;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -202,6 +202,15 @@
             background-color: #cc0000;
         }
         
+        .tools-option {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .tools-option:hover {
+            background-color: #388E3C;
+        }
+        
         .fixed-menu-button {
             padding: 14px;
             background-color: #f5f5f5;
@@ -252,7 +261,7 @@
             animation: typingAnimation 1.4s infinite;
         }
         
-        .极yping-dot:nth-child(2) {
+        .typing-dot:nth-child(2) {
             animation-delay: 0.2s;
         }
         
@@ -276,7 +285,7 @@
             <button class="back-button" id="header-back-button">
                 <i class="fas fa-arrow-left"></i>
             </button>
-            <div class="极ogo">ML</div>
+            <div class="logo">ML</div>
             <h2>MeliAssistente T7</h2>
         </div>
         
@@ -304,10 +313,16 @@
             // Número do Fretadão para contato
             const fretadaoContactNumber = '+5511996867473';
             
+            // Links para ferramentas
+            const toolsLinks = {
+                'ROS': 'https://www.appsheet.com/start/d33841e5-242f-42f7-b5c4-c6480895c4d1',
+                'ROF': 'https://docs.google.com/forms/d/e/1FAIpQLSd23C9jU8hrQNLp0NiRGO36ppQmP15ImFSvKUn_Jeiby6AKCg/viewform'
+            };
+            
             // Mapeamento de links do WhatsApp para cada linha
             const whatsappLinks = {
                 '6517': 'https://chat.whatsapp.com/CwBxAXs530J6kWmsyRy5Y3?mode=ac_t',
-                '6518': 'https://chat.whatsapp.com/CO5qY99AWlWBYmQ78VTHE4', 
+                '6518': 'https://chat.whatsapp.com/CO5qY99AWl极BYmQ78VTHE4', 
                 '6519': 'https://chat.whatsapp.com/IHvPbrPurpTC0iKbZvvbCq?mode=ac_t',
                 '6523': 'https://chat.whatsapp.com/EHjGgDuVX3aALnJMcn31MY?mode=ac_t',
                 '6543': 'https://chat.whatsapp.com/BsHr4OdPJv51afXS0pw3dM',
@@ -322,7 +337,7 @@
                     'iPhone': 'https://apps.apple.com/br/app/fretad%C3%A3o/id958725031'
                 },
                 'My Aghora': {
-                    'Android': 'https://play.google.com/store/search?极=my+ahgora&c=apps&hl=pt_BR',
+                    'Android': 'https://play.google.com/store/search?q=my+ahgora&c=apps&hl=pt_BR',
                     'iPhone': 'https://apps.apple.com/br/app/my-ahgora/id1502293191'
                 },
                 'Holerite Online': {
@@ -365,7 +380,7 @@
             function showMainMenu() {
                 menuHistory = ['main'];
                 updateBackButton();
-                showOptions(['Fretados', 'Aplicativos', 'Reportar Erro'], 'main');
+                showOptions(['Fretados', 'Aplicativos', 'Ferramentas', 'Reportar Erro'], 'main');
             }
             
             // Função para mostrar opções de menu
@@ -408,6 +423,11 @@
                     // Adiciona classe especial para botão de erro
                     if (option.includes('Reportar Erro')) {
                         button.classList.add('error-option');
+                    }
+                    
+                    // Adiciona classe especial para botão de ferramentas
+                    if (option.includes('Ferramentas') || option.includes('Abrir ROS') || option.includes('Abrir ROF')) {
+                        button.classList.add('tools-option');
                     }
                     
                     button.textContent = option;
@@ -480,6 +500,7 @@
                     } else if (option === 'Shift') {
                         addMessage('Você selecionou Shift. Em breve nossa equipe entrará em contato para mais detalhes sobre seu fretado.', 'received');
                         setTimeout(() => {
+                            addMessage('Retornando ao menu principal...', 'received');
                             showMainMenu();
                         }, 1500);
                     } else if (option === 'Fretadão') {
@@ -488,11 +509,29 @@
                     } else if (option === 'Não sei') {
                         addMessage('Por favor, entre em contato com o seu TL para verificar qual é o seu fretado.', 'received');
                         setTimeout(() => {
+                            addMessage('Retornando ao menu principal...', 'received');
                             showMainMenu();
                         }, 1500);
                     } else if (option === 'Aplicativos') {
                         addMessage('Qual aplicativo você precisa de ajuda?', 'received');
                         showOptions(['Aplicativo Fretadão', 'My Aghora', 'Holerite Online', 'Mercado Pago'], 'aplicativos');
+                    } else if (option === 'Ferramentas') {
+                        addMessage('Qual ferramenta você precisa acessar?', 'received');
+                        showOptions(['Abrir ROS', 'Abrir ROF'], 'ferramentas');
+                    } else if (option === 'Abrir ROS') {
+                        addMessage('Abrindo Reporte de Ocorrências de Segurança...', 'received');
+                        setTimeout(() => {
+                            window.open(toolsLinks.ROS, '_blank');
+                            addMessage('Retornando ao menu principal...', 'received');
+                            showMainMenu();
+                        }, 1000);
+                    } else if (option === 'Abrir ROF') {
+                        addMessage('Abrindo Reporte de Ocorrências do Fretado...', 'received');
+                        setTimeout(() => {
+                            window.open(toolsLinks.ROF, '_blank');
+                            addMessage('Retornando ao menu principal...', 'received');
+                            showMainMenu();
+                        }, 1000);
                     } else if (option === 'Aplicativo Fretadão' || option === 'My Aghora' || option === 'Holerite Online' || option === 'Mercado Pago') {
                         addMessage(`Para qual sistema operacional você precisa do ${option}?`, 'received');
                         showOptions(['Android', 'iPhone'], `app-${option.toLowerCase().replace(' ', '-')}`);
@@ -500,17 +539,19 @@
                         const previousMenu = menuHistory[menuHistory.length - 2];
                         const appLink = appLinks[previousMenu] && appLinks[previousMenu][option];
                         
-                        if (appLink) {
+                        if (app极ink) {
                             addMessage(`Abrindo ${option} Store...`, 'received');
                             
                             // Abre o link da app store diretamente
                             setTimeout(() => {
                                 window.open(appLink, '_blank');
+                                addMessage('Retornando ao menu principal...', 'received');
                                 showMainMenu();
                             }, 1000);
                         } else {
                             addMessage(`Desculpe, não encontrei o link para ${previousMenu}.`, 'received');
                             setTimeout(() => {
+                                addMessage('Retornando ao menu principal...', 'received');
                                 showMainMenu();
                             }, 1500);
                         }
@@ -520,6 +561,7 @@
                         // Abre o WhatsApp com o número do Fretadão
                         setTimeout(() => {
                             window.open(`https://wa.me/${fretadaoContactNumber}`, '_blank');
+                            addMessage('Retornando ao menu principal...', 'received');
                             showMainMenu();
                         }, 1000);
                     } else if (option.startsWith('Linha')) {
@@ -536,36 +578,42 @@
                             // Abre o link do WhatsApp diretamente
                             setTimeout(() => {
                                 window.open(whatsappLink, '_blank');
+                                addMessage('Retornando ao menu principal...', 'received');
                                 showMainMenu();
                             }, 1000);
                         } else {
                             addMessage(`Desculpe, não encontrei o grupo da ${selectedLine}.`, 'received');
                             setTimeout(() => {
+                                addMessage('Retornando ao menu principal...', 'received');
                                 showMainMenu();
                             }, 1500);
                         }
                     } else if (option.includes('Rota do Fretado')) {
                         const lineNumber = getLineNumber(selectedLine);
-                        const route极ink = `https://www.fretadao.com.br/fretado/${lineNumber}#modal-iframe`;
+                        const routeLink = `https://www.fretadao.com.br/fretado/${lineNumber}#modal-iframe`;
                         
                         addMessage(`Abrindo rota da ${selectedLine}...`, 'received');
                         
                         // Abre o link da rota diretamente
                         setTimeout(() => {
                             window.open(routeLink, '_blank');
+                            addMessage('Retornando ao menu principal...', 'received');
                             showMainMenu();
                         }, 1000);
                     } else if (option === 'Reportar Erro') {
                         addMessage('Sobre qual serviço você gostaria de reportar um erro?', 'received');
                         showOptions(['Reportar Erro Fretado', 'Reportar Erro MeliAssistente T7'], 'reportar-erro');
                     } else if (option === 'Reportar Erro Fretado') {
-                        addMessage('Obrigado por reportar o erro do Fretado. Nossa equipe será notificada e entrará em contato em breve.', 'received');
+                        addMessage('Abrindo Reporte de Ocorrências do Fretado...', 'received');
                         setTimeout(() => {
+                            window.open(toolsLinks.ROF, '_blank');
+                            addMessage('Retornando ao menu principal...', 'received');
                             showMainMenu();
-                        }, 1500);
-                    } else if (option === 'Reportar Er极 MeliAssistente T7') {
+                        }, 1000);
+                    } else if (option === 'Reportar Erro MeliAssistente T7') {
                         addMessage('Obrigado por reportar o erro do MeliAssistente T7. Nossa equipe de TI será notificada e resolverá o problema em breve.', 'received');
                         setTimeout(() => {
+                            addMessage('Retornando ao menu principal...', 'received');
                             showMainMenu();
                         }, 1500);
                     }
@@ -598,6 +646,7 @@
                         
                         if (previousMenu === 'main') {
                             // Se voltando para o menu principal, chama showMainMenu diretamente
+                            addMessage('Retornando ao menu principal...', 'received');
                             showMainMenu();
                         } else if (previousMenu === 'Fretados') {
                             addMessage('Seu fretado é:', 'received');
@@ -608,6 +657,9 @@
                         } else if (previousMenu === 'Aplicativos') {
                             addMessage('Qual aplicativo você precisa de ajuda?', 'received');
                             showOptions(['Aplicativo Fretadão', 'My Aghora', 'Holerite Online', 'Mercado Pago'], 'aplicativos');
+                        } else if (previousMenu === 'Ferramentas') {
+                            addMessage('Qual ferramenta você precisa acessar?', 'received');
+                            showOptions(['Abrir ROS', 'Abrir ROF'], 'ferramentas');
                         } else if (previousMenu.startsWith('app-')) {
                             const appName = previousMenu.replace('app-', '').replace('-', ' ');
                             addMessage(`Para qual sistema operacional você precisa do ${appName}?`, 'received');
@@ -618,7 +670,7 @@
                         } else if (previousMenu.startsWith('Linha')) {
                             selectedLine = previousMenu;
                             addMessage(`Você selecionou a ${previousMenu}. O que você gostaria de saber?`, 'received');
-                            showOptions([`Grupo do WhatsApp do Fretado (${getLineNumber(previousMenu)})`, `Rota do Fretado (${getLineNumber(previousMenu)})`], 'linha-opcoes');
+                            showOptions([`Grupo do WhatsApp do Fretado (${getLineNumber(previousMenu)})`, `Rota do Fretado (${getLineNumber(previousMenu)})`], '极nha-opcoes');
                         }
                     }, 1000);
                 }
