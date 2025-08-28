@@ -3,727 +3,745 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MeliAssistente T7 - Chat Simples</title>
+    <title>MeliAssistente T7 - Suporte Direto</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-yellow: #ffe600;
+            --primary-blue: #2d3277;
+            --light-bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-dark: #2d3277;
+            --text-light: #6c757d;
+            --border-radius: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+            font-family: 'Inter', sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #ffe600 0%, #2d3277 100%);
+            background: var(--light-bg);
+            min-height: 100vh;
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            color: var(--text-dark);
         }
         
-        .whatsapp-container {
+        .container {
             width: 100%;
-            max-width: 400px;
-            height: 80vh;
-            background-color: #fff;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
             display: flex;
             flex-direction: column;
+            gap: 20px;
         }
         
-        .chat-header {
-            background-color: #ffe600;
-            color: #2d3277;
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border-bottom: 2px solid #2d3277;
-            position: relative;
-        }
-        
-        .back-button {
-            background: none;
-            border: none;
-            color: #2d3277;
-            font-size: 18px;
-            cursor: pointer;
-            margin-right: 5极;
-            display: none;
+        .header {
+            text-align: center;
+            padding: 20px 0;
         }
         
         .logo {
-            width: 42px;
-            height: 42px;
-            background-color: #2d3277;
+            width: 70px;
+            height: 70px;
+            background: var(--primary-blue);
+            color: var(--primary-yellow);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #ffe600;
-            font-weight: bold;
-            font-size: 18px;
-        }
-        
-        .chat-header h2 {
-            font-size: 17px;
+            font-size: 24px;
             font-weight: 600;
+            margin: 0 auto 15px;
         }
         
-        .chat-messages {
-            flex: 1;
-            padding: 16px;
-            overflow-y: auto;
-            background-color: #ece5dd;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232d3277极 fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4极4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--primary-blue);
+        }
+        
+        .header p {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+        
+        .main-menu {
             display: flex;
             flex-direction: column;
+            gap: 15px;
         }
         
-        .message {
-            max-width: 80%;
-            padding: 10px 14px;
-            margin-bottom: 12px;
-            border-radius: 18px;
-            position: relative;
-            animation: fadeIn 0.3s;
-            line-height: 1.4;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .received {
-            background-color: #ffffff;
-            align-self: flex-start;
-            border-top-left-radius: 5px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e6e6e6;
-        }
-        
-        .sent {
-            background-color: #e3极2fd;
-            align-self: flex-end;
-            border-top-right-radius: 5px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-            border: 1px solid #bbdefb;
-            color: #2d3277;
-        }
-        
-        .time {
-            font-size: 11px;
-            color: #999;
-            text-align: right;
-            margin-top: 3px;
-        }
-        
-        .options-container {
+        .main-button {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 12px;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: var(--shadow);
         }
         
-        .two-columns {
+        .main-button:hover {
+            background: var(--primary-blue);
+            color: var(--primary-yellow);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .main-button i {
+            font-size: 20px;
+        }
+        
+        .back-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            background: #f1f1f1;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 15px;
+        }
+        
+        .back-button:hover {
+            background: #e5e5e5;
+        }
+        
+        .back-button i {
+            margin-right: 8px;
+        }
+        
+        .options-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            grid-template-columns: 1fr;
+            gap: 12px;
         }
         
         .option-button {
-            background-color: #ffe600;
-            color: #2d3277;
-            border: none;
-            border-radius: 18px;
-            padding: 12px 10px;
-            font-size: 13px;
-            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: white;
+            border: 1px solid #eaeaea;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-dark);
             cursor: pointer;
             transition: all 0.2s;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         
         .option-button:hover {
-            background-color: #f2d800;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+            background: var(--primary-blue);
+            color: var(--primary-yellow);
+            border-color: var(--primary-blue);
         }
         
-        .back-option {
-            background-color: #f5f5f5;
-            color: #666;
-            grid-column: span 2;
+        .option-button i {
+            font-size: 16px;
         }
         
-        .back-option:hover {
-            background-color: #e0e0e0;
-        }
-        
-        .contact-option {
-            background-color: #2d3277;
-            color: white;
-            grid-column: span 2;
-        }
-        
-        .contact-option:hover {
-            background-color: #1a1f52;
-        }
-        
-        .whatsapp-option {
-            background-color: #25D366;
-            color: white;
-        }
-        
-        .whatsapp-option:hover {
-            background-color: #128C7E;
-        }
-        
-        .route-option {
-            background-color: #2d3277;
-            color: white;
-        }
-        
-        .route-option:hover {
-            background-color: #1a1f52;
-        }
-        
-        .error-option {
-            background-color: #ff4444;
-            color: white;
-        }
-        
-        .error-option:hover {
-            background-color: #cc0000;
-        }
-        
-        .tools-option {
-            background-color: #4CAF50;
-            color: white;
-        }
-        
-        .tools-option:hover {
-            background-color: #388E3C;
-        }
-        
-        .fixed-menu-button {
-            padding: 14px;
-            background-color: #f5f5f5;
-            border-top: 1px solid #e6e6e6;
-            display: flex;
-            justify-content: center;
-        }
-        
-        .fixed-menu-button button {
-            background-color: #2d3277;
+        .whatsapp-button {
+            background: #25D366;
             color: white;
             border: none;
-            border-radius: 24px;
-            padding: 12px 24px;
-            font-size: 15px;
-            font-weight: 600;
+        }
+        
+        .whatsapp-button:hover {
+            background: #128C7E;
+            color: white;
+        }
+        
+        .route-button {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+        }
+        
+        .route-button:hover {
+            background: #1a1f52;
+            color: white;
+        }
+        
+        .contact-button {
+            background: #ff7b00;
+            color: white;
+            border: none;
+        }
+        
+        .contact-button:hover {
+            background: #e06a00;
+            color: white;
+        }
+        
+        .error-button {
+            background: #ff4444;
+            color: white;
+            border: none;
+        }
+        
+        .error-button:hover {
+            background: #cc0000;
+            color: white;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--text-light);
+            font-size: 12px;
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: var(--primary-blue);
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .modal-button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.2s;
+        }
+        
+        .modal-button.confirm {
+            background: var(--primary-blue);
+            color: white;
+        }
+        
+        .modal-button.cancel {
+            background: #f1f1f1;
+            color: var(--text-dark);
+        }
+        
+        .tutorial-button {
             display: flex;
             align-items: center;
-            gap: 8px;
-            width: 100%;
-            justify-content: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: white;
+            border: 1px solid #eaeaea;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
         }
         
-        .fixed-menu-button button:hover {
-            background-color: #1a1f52;
+        .tutorial-button:hover {
+            background: var(--primary-blue);
+            color: var(--primary-yellow);
+            border-color: var(--primary-blue);
         }
         
-        .typing-indicator {
-            background-color: #ffffff;
-            padding: 12px 16px;
-            border-radius: 18px;
-            display: inline-flex;
+        .tutorial-button i {
+            font-size: 16px;
+            margin-left: 10px;
+        }
+        
+        .contact-fretadao-button {
+            display: flex;
             align-items: center;
-            margin-bottom: 10px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e6e6e6;
-            align-self: flex-start;
+            justify-content: center;
+            padding: 16px;
+            background: #25D366;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 15px;
+            gap: 8px;
         }
         
-        .typing-dot {
-            width: 7px;
-            height: 7px;
-            background-color: #2d3277;
-            border-radius: 50%;
-            margin: 0 3px;
-            animation: typingAnimation 1.4s infinite;
-        }
-        
-        .typing-dot:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-        
-        .typing-dot:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-        
-        @keyframes typingAnimation {
-            0%, 60%, 100% {
-                transform: translateY(0);
-            }
-            30% {
-                transform: translateY(-4px);
-            }
+        .contact-fretadao-button:hover {
+            background: #128C7E;
+            color: white;
         }
     </style>
 </head>
 <body>
-    <div class="whatsapp-container">
-        <div class="chat-header">
-            <button class="back-button" id="header-back-button">
-                <i class="fas fa-arrow-left"></i>
-            </button>
-            <div class="logo">ML</div>
-            <h2>MeliAssistente T7</h2>
+    <div class="container">
+        <!-- Página Inicial -->
+        <div class="page active" id="main-page">
+            <div class="header">
+                <div class="logo">ML</div>
+                <h1>MeliAssistente T7</h1>
+                <p>Seu portal de suporte rápido e direto</p>
+            </div>
+            
+            <div class="main-menu">
+                <button class="main-button" onclick="showPage('fretados-page')">
+                    <span><i class="fas fa-bus"></i> Fretados</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                <button class="main-button" onclick="showPage('sistema-page')">
+                    <span><i class="fas fa-mobile-alt"></i> Aplicativos</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                <button class="main-button" onclick="showPage('tutoriais-page')">
+                    <span><i class="fas fa-book"></i> Tutoriais</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                <button class="main-button error-button" onclick="showPage('ocorrencias-page')">
+                    <span><i class="fas fa-exclamation-triangle"></i> Reportar Ocorrência</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <div class="footer">
+                <p>MeliAssistente T7 &copy; 2025</p>
+            </div>
         </div>
         
-        <div class="chat-messages" id="chat-messages">
-            <!-- As mensagens serão adicionadas aqui via JavaScript -->
+        <!-- Página de Fretados -->
+        <div class="page" id="fretados-page">
+            <button class="back-button" onclick="showPage('main-page')">
+                <i class="fas fa-arrow-left"></i> Voltar ao Menu Principal
+            </button>
+            
+            <div class="header">
+                <h1>Fretados</h1>
+                <p>Selecione sua opção de fretado</p>
+            </div>
+            
+            <div class="options-grid">
+                <button class="option-button" onclick="showModal('Shift', 'Ainda não temos informações disponíveis das linhas Shift.')">
+                    <span><i class="fas fa-shuttle-van"></i> Shift</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                <button class="option-button" onclick="showPage('linhas-page')">
+                    <span><i class="fas fa-bus-alt"></i> Fretadão</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                <button class="option-button contact-button" onclick="showModal('Contato', 'Entre em contato com seu TL.')">
+                    <span><i class="fas fa-headset"></i> Não sei meu fretado</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
         </div>
         
-        <div class="fixed-menu-button">
-            <button id="fixed-main-menu-button">
-                <i class="fas fa-home"></i> Menu Inicial
+        <!-- Página de Linhas do Fretadão -->
+        <div class="page" id="linhas-page">
+            <button class="back-button" onclick="showPage('fretados-page')">
+                <i class="fas fa-arrow-left"></i> Voltar para Fretados
             </button>
+            
+            <div class="header">
+                <h1>Linhas do Fretadão</h1>
+                <p>Selecione sua linha</p>
+            </div>
+            
+            <div class="options-grid">
+                <button class="option-button" onclick="selectLine('6517')">
+                    <span>Linha 6517</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="option-button" onclick="selectLine('6518')">
+                    <span>Linha 6518</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="option-button" onclick="selectLine('6519')">
+                    <span>Linha 6519</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="option-button" onclick="selectLine('6523')">
+                    <span>Linha 6523</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="option-button" onclick="selectLine('6543')">
+                    <span>Linha 6543</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="option-button" onclick="selectLine('6544')">
+                    <span>Linha 6544</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="option-button" onclick="selectLine('6564')">
+                    <span>Linha 6564</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <button class="contact-fretadao-button" onclick="contactFretadao()">
+                <i class="fab fa-whatsapp"></i> Falar com o Fretadão
+            </button>
+        </div>
+        
+        <!-- Página de Ações da Linha -->
+        <div class="page" id="linha-actions-page">
+            <button class="back-button" onclick="showPage('linhas-page')">
+                <i class="fas fa-arrow-left"></i> Voltar para Linhas
+            </button>
+            
+            <div class="header">
+                <h1>Linha <span id="selected-line-text"></span></h1>
+                <p>O que você precisa?</p>
+            </div>
+            
+            <div class="options-grid">
+                <button class="option-button whatsapp-button" onclick="openWhatsApp()">
+                    <span><i class="fab fa-whatsapp"></i> Grupo do WhatsApp</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                <button class="option-button route-button" onclick="openRoute()">
+                    <span><i class="fas fa-route"></i> Ver Rota do Fretado</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Página de Seleção de Sistema Operacional -->
+        <div class="page" id="sistema-page">
+            <button class="back-button" onclick="showPage('main-page')">
+                <i class="fas fa-arrow-left"></i> Voltar ao Menu Principal
+            </button>
+            
+            <div class="header">
+                <h1>Aplicativos</h1>
+                <p>Selecione seu sistema operacional</p>
+            </div>
+            
+            <div class="options-grid">
+                <button class="option-button" onclick="showPage('android-page')">
+                    <span><i class="fab fa-android"></i> Android</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                <button class="option-button" onclick="showPage('iphone-page')">
+                    <span><i class="fab fa-apple"></i> iPhone</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Página de Aplicativos Android -->
+        <div class="page" id="android-page">
+            <button class="back-button" onclick="showPage('sistema-page')">
+                <i class="fas fa-arrow-left"></i> Voltar para Sistemas
+            </button>
+            
+            <div class="header">
+                <h1>Aplicativos para Android</h1>
+                <p>Selecione o aplicativo desejado</p>
+            </div>
+            
+            <div class="options-grid">
+                <button class="option-button" onclick="downloadApp('Fretadão', 'Android')">
+                    <span>Fretadão</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="option-button" onclick="downloadApp('My Aghora', 'Android')">
+                    <span>My Aghora</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="option-button" onclick="downloadApp('Holerite Online', 'Android')">
+                    <span>Holerite Online</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="option-button" onclick="downloadApp('Mercado Pago', 'Android')">
+                    <span>Mercado Pago</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Página de Aplicativos iPhone -->
+        <div class="page" id="iphone-page">
+            <button class="back-button" onclick="showPage('sistema-page')">
+                <i class="fas fa-arrow-left"></i> Voltar para Sistemas
+            </button>
+            
+            <div class="header">
+                <h1>Aplicativos para iPhone</h1>
+                <p>Selecione o aplicativo desejado</p>
+            </div>
+            
+            <div class="options-grid">
+                <button class="option-button" onclick="downloadApp('Fretadão', 'iPhone')">
+                    <span>Fretadão</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="option-button" onclick="downloadApp('My Aghora', 'iPhone')">
+                    <span>My Aghora</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="option-button" onclick="downloadApp('Holerite Online', 'iPhone')">
+                    <span>Holerite Online</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="option-button" onclick="downloadApp('Mercado Pago', 'iPhone')">
+                    <span>Mercado Pago</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Página de Tutoriais -->
+        <div class="page" id="tutoriais-page">
+            <button class="back-button" onclick="showPage('main-page')">
+                <i class="fas fa-arrow-left"></i> Voltar ao Menu Principal
+            </button>
+            
+            <div class="header">
+                <h1>Tutoriais</h1>
+                <p>Selecione o tutorial desejado</p>
+            </div>
+            
+            <div class="options-grid">
+                <button class="tutorial-button" onclick="openTutorial('https://docs.google.com/presentation/d/13cEWwJD3fihEp60g_FqS5VOSNdWXA_k7PBh18hUQdbw/edit?usp=sharing')">
+                    <span>PAGAMENTO & BENEFÍCIOS</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="tutorial-button" onclick="openTutorial('https://docs.google.com/presentation/d/1PuhrQ0rrBoKd1b8MbGTzzAfej2TG_qDq6Z_ew0oLQes/edit?usp=sharing')">
+                    <span>MY AHGORA & PONTO</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="tutorial-button" onclick="openTutorial('https://docs.google.com/presentation/d/1vfg-UxGQXr9VtbCLlxuGRcLU11O-w4ErSs6do7XgjZs/edit?usp=sharing')">
+                    <span>PEOPLE CHAT</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="tutorial-button" onclick="openTutorial('https://docs.google.com/presentation/d/1OF4_3O9PkOIOq6U9KngBK9sWONJShmx__7ERj3eXhYs/edit?usp=sharing')">
+                    <span>FRETADO</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="tutorial-button" onclick="openTutorial('https://docs.google.com/presentation/d/1vfg-UxGQXr9VtbCLlxuGRcLU11O-w4ErSs6do7XgjZs/edit?usp=sharing')">
+                    <span>ACESSO AO REFEITÓRIO</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="tutorial-button" onclick="openTutorial('https://docs.google.com/presentation/d/184xbCHQhjabquWbBlNcijWXH7rjyMe8S1XcX9ZhUMYE/edit?usp=sharing')">
+                    <span>TRILHA DE CARREIRA NO MELI</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="tutorial-button" onclick="openTutorial('https://docs.google.com/presentation/d/1ApsUFSRs4trv8MhfT_CZXwBs8S2XEi4MSMi7-URyj-s/edit?usp=sharing')">
+                    <span>REGRAS DE SEGURANÇA + SETORES DO CAD</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Página de Reportar Ocorrências -->
+        <div class="page" id="ocorrencias-page">
+            <button class="back-button" onclick="showPage('main-page')">
+                <i class="fas fa-arrow-left"></i> Voltar ao Menu Principal
+            </button>
+            
+            <div class="header">
+                <h1>Reportar Ocorrência</h1>
+                <p>Selecione o tipo de ocorrência</p>
+            </div>
+            
+            <div class="options-grid">
+                <button class="option-button error-button" onclick="openROF()">
+                    <span><i class="fas fa-bus"></i> ROF - Reporte de Ocorrências do Fretado</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="option-button error-button" onclick="openROS()">
+                    <span><i class="fas fa-shield-alt"></i> ROS - Reporte de Ocorrência de Segurança</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Modal de Informação -->
+        <div class="modal" id="info-modal">
+            <div class="modal-content">
+                <h3 class="modal-title" id="modal-title">Informação</h3>
+                <p id="modal-message">Mensagem de informação.</p>
+                <div class="modal-buttons">
+                    <button class="modal-button confirm" onclick="closeModal()">OK</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const chatMessages = document.getElementById('chat-messages');
-            const headerBackButton = document.getElementById('header-back-button');
-            const fixedMainMenuButton = document.getElementById('fixed-main-menu-button');
-            
-            // Histórico de menus
-            let menuHistory = [];
-            let selectedLine = '';
-            
-            // Número do Fretadão para contato
-            const fretadaoContactNumber = '+5511996867473';
-            
-            // Links para ferramentas
-            const toolsLinks = {
-                'ROS': 'https://www.appsheet.com/start/d33841e5-242f-42f7-b5c4-c6480895c4d1',
-                'ROF': 'https://docs.google.com/forms/d/e/1FAIpQLSd23C9jU8hrQNLp0NiRGO36ppQmP15ImFSvKUn_Jeiby6AKCg/viewform'
-            };
-            
-            // Mapeamento de links do WhatsApp para cada linha
-            const whatsappLinks = {
-                '6517': 'https://chat.whatsapp.com/CwBxAXs530J6kWmsyRy5Y3?mode=ac_t',
-                '6518': 'https://chat.whatsapp.com/CO5qY99AWl极BYmQ78VTHE4', 
-                '6519': 'https://chat.whatsapp.com/IHvPbrPurpTC0iKbZvvbCq?mode=ac_t',
-                '6523': 'https://chat.whatsapp.com/EHjGgDuVX3aALnJMcn31MY?mode=ac_t',
-                '6543': 'https://chat.whatsapp.com/BsHr4OdPJv51afXS0pw3dM',
-                '6544': 'https://chat.whatsapp.com/DoACBzZgT5uJ1hAvOR5YbQ?mode=ac_t',
-                '6564': 'https://chat.whatsapp.com/EPXKvnaxlFiCIhKysjkrbC?mode=ac_t'
-            };
-            
-            // Links para aplicativos
-            const appLinks = {
-                'Aplicativo Fretadão': {
-                    'Android': 'https://play.google.com/store/search?q=FRETAD%C3%83O&c=apps&hl=pt_BR',
-                    'iPhone': 'https://apps.apple.com/br/app/fretad%C3%A3o/id958725031'
-                },
-                'My Aghora': {
-                    'Android': 'https://play.google.com/store/search?q=my+ahgora&c=apps&hl=pt_BR',
-                    'iPhone': 'https://apps.apple.com/br/app/my-ahgora/id1502293191'
-                },
-                'Holerite Online': {
-                    'Android': 'https://play.google.com/store/apps/details?id=br.com.wb2b.holeriteonline&hl=pt_BR',
-                    'iPhone': 'https://apps.apple.com/br/app/holeriteonline-wb2b-procprint/id1234737064'
-                },
-                'Mercado Pago': {
-                    'Android': 'https://play.google.com/store/search?q=mercado%20pago&c=apps&hl=pt_BR',
-                    'iPhone': 'https://apps.apple.com/br/app/mercado-pago-banco-digital/id925436649'
-                }
-            };
-            
-            // Mensagem inicial do bot
-            setTimeout(() => {
-                addMessage('Olá, bom dia! Sou MeliAssistente T7, como posso ajudar?', 'received');
-                // Chamada direta para mostrar o menu principal após a mensagem
-                showMainMenu();
-            }, 1000);
-            
-            // Função para adicionar mensagem ao chat
-            function addMessage(text, type) {
-                const messageDiv = document.createElement('div');
-                messageDiv.classList.add('message', type);
-                
-                const messageText = document.createElement('div');
-                messageText.textContent = text;
-                
-                const timeSpan = document.createElement('div');
-                timeSpan.classList.add('time');
-                timeSpan.textContent = getCurrentTime();
-                
-                messageDiv.appendChild(messageText);
-                messageDiv.appendChild(timeSpan);
-                
-                chatMessages.appendChild(messageDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
+        // Mapeamento de links do WhatsApp para cada linha
+        const whatsappLinks = {
+            '6517': 'https://chat.whatsapp.com/CwBxAXs530J6kWmsyRy5Y3?mode=ac_t',
+            '6518': 'https://chat.whatsapp.com/CO5qY99AWlWBYmQ78VTHE4', 
+            '6519': 'https://chat.whatsapp.com/IHvPbrPurpTC0iKbZvvbCq?mode=ac_t',
+            '6523': 'https://chat.whatsapp.com/EHjGgDuVX3aALnJMcn31MY?mode=ac_t',
+            '6543': 'https://chat.whatsapp.com/BsHr4OdPJv51afXS0pw3dM',
+            '6544': 'https://chat.whatsapp.com/DoACBzZgT5uJ1hAvOR5YbQ?mode=ac_t',
+            '6564': 'https://chat.whatsapp.com/EPXKvnaxlFiCIhKysjkrbC?mode=ac_t'
+        };
+        
+        // Links para aplicativos
+        const appLinks = {
+            'Fretadão': {
+                'Android': 'https://play.google.com/store/search?q=FRETAD%C3%83O&c=apps&hl=pt_BR',
+                'iPhone': 'https://apps.apple.com/br/app/fretad%C3%A3o/id958725031'
+            },
+            'My Aghora': {
+                'Android': 'https://play.google.com/store/search?q=my+ahgora&c=apps&hl=pt_BR',
+                'iPhone': 'https://apps.apple.com/br/app/my-ahgora/id1502293191'
+            },
+            'Holerite Online': {
+                'Android': 'https://play.google.com/store/apps/details?id=br.com.wb2b.holeriteonline&hl=pt_BR',
+                'iPhone': 'https://apps.apple.com/br/app/holeriteonline-wb2b-procprint/id1234737064'
+            },
+            'Mercado Pago': {
+                'Android': 'https://play.google.com/store/search?q=mercado%20pago&c=apps&hl=pt_BR',
+                'iPhone': 'https://apps.apple.com/br/app/mercado-pago-banco-digital/id925436649'
             }
+        };
+        
+        let selectedLine = '';
+        
+        function showPage(pageId) {
+            // Oculta todas as páginas
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
             
-            // Função para mostrar o menu principal
-            function showMainMenu() {
-                menuHistory = ['main'];
-                updateBackButton();
-                showOptions(['Fretados', 'Aplicativos', 'Ferramentas', 'Reportar Erro'], 'main');
+            // Mostra a página solicitada
+            document.getElementById(pageId).classList.add('active');
+            
+            // Rolagem para o topo
+            window.scrollTo(0, 0);
+        }
+        
+        function showModal(title, message) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-message').textContent = message;
+            document.getElementById('info-modal').style.display = 'flex';
+        }
+        
+        function selectLine(line) {
+            selectedLine = line;
+            document.getElementById('selected-line-text').textContent = line;
+            showPage('linha-actions-page');
+        }
+        
+        function openWhatsApp() {
+            const link = whatsappLinks[selectedLine];
+            if (link) {
+                window.open(link, '_blank');
+            } else {
+                alert('Link do WhatsApp não encontrado para esta linha.');
             }
-            
-            // Função para mostrar opções de menu
-            function showOptions(options, menuType) {
-                // Remove opções anteriores se existirem
-                const existingOptions = document.getElementById('current-options');
-                if (existingOptions) {
-                    existingOptions.remove();
-                }
-                
-                const optionsContainer = document.createElement('div');
-                optionsContainer.classList.add('options-container');
-                
-                // Verifica se precisa de layout de duas colunas
-                if (options.length > 6 || menuType === 'fretadao-linhas') {
-                    optionsContainer.classList.add('two-columns');
-                }
-                
-                optionsContainer.id = 'current-options';
-                
-                options.forEach(option => {
-                    const button = document.createElement('button');
-                    button.classList.add('option-button');
-                    
-                    // Adiciona classe especial para botão de contato
-                    if (option.includes('Entrar em contato')) {
-                        button.classList.add('contact-option');
-                    }
-                    
-                    // Adiciona classe especial para botão do WhatsApp
-                    if (option.includes('Grupo do WhatsApp')) {
-                        button.classList.add('whatsapp-option');
-                    }
-                    
-                    // Adiciona classe especial para botão de rota
-                    if (option.includes('Rota do Fretado')) {
-                        button.classList.add('route-option');
-                    }
-                    
-                    // Adiciona classe especial para botão de erro
-                    if (option.includes('Reportar Erro')) {
-                        button.classList.add('error-option');
-                    }
-                    
-                    // Adiciona classe especial para botão de ferramentas
-                    if (option.includes('Ferramentas') || option.includes('Abrir ROS') || option.includes('Abrir ROF')) {
-                        button.classList.add('tools-option');
-                    }
-                    
-                    button.textContent = option;
-                    button.addEventListener('click', () => {
-                        handleOptionClick(option, menuType);
-                    });
-                    optionsContainer.appendChild(button);
-                });
-                
-                // Adicionar botão "Entrar em contato com o Fretadão" abaixo da lista de linhas
-                if (menuType === 'fretadao-linhas') {
-                    const contactButton = document.createElement('button');
-                    contactButton.classList.add('option-button', 'contact-option');
-                    contactButton.innerHTML = '<i class="fab fa-whatsapp"></i> Entrar em contato com o Fretadão';
-                    contactButton.addEventListener('click', () => {
-                        handleOptionClick('Entrar em contato com o Fretadão', 'fretadao-contact');
-                    });
-                    optionsContainer.appendChild(contactButton);
-                }
-                
-                // Adicionar botão Voltar apenas para menus que não voltam ao principal
-                if (menuType !== 'main') {
-                    const backButton = document.createElement('button');
-                    backButton.classList.add('option-button', 'back-option');
-                    backButton.innerHTML = '<i class="fas fa-arrow-left"></i> Voltar';
-                    backButton.addEventListener('click', goBack);
-                    optionsContainer.appendChild(backButton);
-                }
-                
-                chatMessages.appendChild(optionsContainer);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function openRoute() {
+            const routeLink = `https://www.fretadao.com.br/fretado/${selectedLine}#modal-iframe`;
+            window.open(routeLink, '_blank');
+        }
+        
+        function contactFretadao() {
+            window.open('https://wa.me/5511996867473', '_blank');
+        }
+        
+        function downloadApp(app, os) {
+            const link = appLinks[app] && appLinks[app][os];
+            if (link) {
+                window.open(link, '_blank');
+            } else {
+                alert(`Link para ${app} na ${os} Store não encontrado.`);
             }
-            
-            // Função para obter a hora atual formatada
-            function getCurrentTime() {
-                const now = new Date();
-                return `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-            }
-            
-            // Função para lidar com o clique nas opções
-            function handleOptionClick(option, menuType) {
-                addMessage(option, 'sent');
-                
-                // Remove os botões de opção após o clique
-                const optionsContainer = document.getElementById('current-options');
-                if (optionsContainer) {
-                    optionsContainer.remove();
-                }
-                
-                // Adiciona ao histórico
-                if (menuType !== 'back') {
-                    menuHistory.push(option);
-                    updateBackButton();
-                }
-                
-                // Simula o bot digitando
-                showTypingIndicator();
-                
-                // Resposta baseada na opção selecionada
-                setTimeout(() => {
-                    // Remove o indicador de digitação
-                    const typingIndicator = document.querySelector('.typing-indicator');
-                    if (typingIndicator) {
-                        typingIndicator.remove();
-                    }
-                    
-                    if (option === 'Fretados') {
-                        addMessage('Seu fretado é:', 'received');
-                        showOptions(['Shift', 'Fretadão', 'Não sei'], 'fretados');
-                    } else if (option === 'Shift') {
-                        addMessage('Você selecionou Shift. Em breve nossa equipe entrará em contato para mais detalhes sobre seu fretado.', 'received');
-                        setTimeout(() => {
-                            addMessage('Retornando ao menu principal...', 'received');
-                            showMainMenu();
-                        }, 1500);
-                    } else if (option === 'Fretadão') {
-                        addMessage('Qual é a sua linha do Fretadão?', 'received');
-                        showOptions(['Linha 6517', 'Linha 6518', 'Linha 6519', 'Linha 6523', 'Linha 6543', 'Linha 6544', 'Linha 6564', 'Não sei minha Linha'], 'fretadao-linhas');
-                    } else if (option === 'Não sei') {
-                        addMessage('Por favor, entre em contato com o seu TL para verificar qual é o seu fretado.', 'received');
-                        setTimeout(() => {
-                            addMessage('Retornando ao menu principal...', 'received');
-                            showMainMenu();
-                        }, 1500);
-                    } else if (option === 'Aplicativos') {
-                        addMessage('Qual aplicativo você precisa de ajuda?', 'received');
-                        showOptions(['Aplicativo Fretadão', 'My Aghora', 'Holerite Online', 'Mercado Pago'], 'aplicativos');
-                    } else if (option === 'Ferramentas') {
-                        addMessage('Qual ferramenta você precisa acessar?', 'received');
-                        showOptions(['Abrir ROS', 'Abrir ROF'], 'ferramentas');
-                    } else if (option === 'Abrir ROS') {
-                        addMessage('Abrindo Reporte de Ocorrências de Segurança...', 'received');
-                        setTimeout(() => {
-                            window.open(toolsLinks.ROS, '_blank');
-                            addMessage('Retornando ao menu principal...', 'received');
-                            showMainMenu();
-                        }, 1000);
-                    } else if (option === 'Abrir ROF') {
-                        addMessage('Abrindo Reporte de Ocorrências do Fretado...', 'received');
-                        setTimeout(() => {
-                            window.open(toolsLinks.ROF, '_blank');
-                            addMessage('Retornando ao menu principal...', 'received');
-                            showMainMenu();
-                        }, 1000);
-                    } else if (option === 'Aplicativo Fretadão' || option === 'My Aghora' || option === 'Holerite Online' || option === 'Mercado Pago') {
-                        addMessage(`Para qual sistema operacional você precisa do ${option}?`, 'received');
-                        showOptions(['Android', 'iPhone'], `app-${option.toLowerCase().replace(' ', '-')}`);
-                    } else if (option === 'Android' || option === 'iPhone') {
-                        const previousMenu = menuHistory[menuHistory.length - 2];
-                        const appLink = appLinks[previousMenu] && appLinks[previousMenu][option];
-                        
-                        if (app极ink) {
-                            addMessage(`Abrindo ${option} Store...`, 'received');
-                            
-                            // Abre o link da app store diretamente
-                            setTimeout(() => {
-                                window.open(appLink, '_blank');
-                                addMessage('Retornando ao menu principal...', 'received');
-                                showMainMenu();
-                            }, 1000);
-                        } else {
-                            addMessage(`Desculpe, não encontrei o link para ${previousMenu}.`, 'received');
-                            setTimeout(() => {
-                                addMessage('Retornando ao menu principal...', 'received');
-                                showMainMenu();
-                            }, 1500);
-                        }
-                    } else if (option === 'Não sei minha Linha' || option === 'Entrar em contato com o Fretadão') {
-                        addMessage('Abrindo conversa com o Fretadão...', 'received');
-                        
-                        // Abre o WhatsApp com o número do Fretadão
-                        setTimeout(() => {
-                            window.open(`https://wa.me/${fretadaoContactNumber}`, '_blank');
-                            addMessage('Retornando ao menu principal...', 'received');
-                            showMainMenu();
-                        }, 1000);
-                    } else if (option.startsWith('Linha')) {
-                        selectedLine = option;
-                        addMessage(`Você selecionou a ${option}. O que você gostaria de saber?`, 'received');
-                        showOptions([`Grupo do WhatsApp do Fretado (${getLineNumber(option)})`, `Rota do Fretado (${getLineNumber(option)})`], 'linha-opcoes');
-                    } else if (option.includes('Grupo do WhatsApp')) {
-                        const lineNumber = getLineNumber(selectedLine);
-                        const whatsappLink = whatsappLinks[lineNumber];
-                        
-                        if (whatsappLink) {
-                            addMessage(`Abrindo grupo do WhatsApp da ${selectedLine}...`, 'received');
-                            
-                            // Abre o link do WhatsApp diretamente
-                            setTimeout(() => {
-                                window.open(whatsappLink, '_blank');
-                                addMessage('Retornando ao menu principal...', 'received');
-                                showMainMenu();
-                            }, 1000);
-                        } else {
-                            addMessage(`Desculpe, não encontrei o grupo da ${selectedLine}.`, 'received');
-                            setTimeout(() => {
-                                addMessage('Retornando ao menu principal...', 'received');
-                                showMainMenu();
-                            }, 1500);
-                        }
-                    } else if (option.includes('Rota do Fretado')) {
-                        const lineNumber = getLineNumber(selectedLine);
-                        const routeLink = `https://www.fretadao.com.br/fretado/${lineNumber}#modal-iframe`;
-                        
-                        addMessage(`Abrindo rota da ${selectedLine}...`, 'received');
-                        
-                        // Abre o link da rota diretamente
-                        setTimeout(() => {
-                            window.open(routeLink, '_blank');
-                            addMessage('Retornando ao menu principal...', 'received');
-                            showMainMenu();
-                        }, 1000);
-                    } else if (option === 'Reportar Erro') {
-                        addMessage('Sobre qual serviço você gostaria de reportar um erro?', 'received');
-                        showOptions(['Reportar Erro Fretado', 'Reportar Erro MeliAssistente T7'], 'reportar-erro');
-                    } else if (option === 'Reportar Erro Fretado') {
-                        addMessage('Abrindo Reporte de Ocorrências do Fretado...', 'received');
-                        setTimeout(() => {
-                            window.open(toolsLinks.ROF, '_blank');
-                            addMessage('Retornando ao menu principal...', 'received');
-                            showMainMenu();
-                        }, 1000);
-                    } else if (option === 'Reportar Erro MeliAssistente T7') {
-                        addMessage('Obrigado por reportar o erro do MeliAssistente T7. Nossa equipe de TI será notificada e resolverá o problema em breve.', 'received');
-                        setTimeout(() => {
-                            addMessage('Retornando ao menu principal...', 'received');
-                            showMainMenu();
-                        }, 1500);
-                    }
-                }, 1500);
-            }
-            
-            // Função para extrair o número da linha
-            function getLineNumber(lineName) {
-                return lineName.replace('Linha ', '');
-            }
-            
-            // Função para voltar ao menu anterior
-            function goBack() {
-                if (menuHistory.length > 1) {
-                    // Remove a opção atual do histórico
-                    menuHistory.pop();
-                    
-                    // Remove os botões de opção atuais
-                    const optionsContainer = document.getElementById('current-options');
-                    if (optionsContainer) {
-                        optionsContainer.remove();
-                    }
-                    
-                    // Simula o bot digitando
-                    showTypingIndicator();
-                    
-                    // Volta para o menu anterior
-                    setTimeout(() => {
-                        const previousMenu = menuHistory[menuHistory.length - 1];
-                        
-                        if (previousMenu === 'main') {
-                            // Se voltando para o menu principal, chama showMainMenu diretamente
-                            addMessage('Retornando ao menu principal...', 'received');
-                            showMainMenu();
-                        } else if (previousMenu === 'Fretados') {
-                            addMessage('Seu fretado é:', 'received');
-                            showOptions(['Shift', 'Fretadão', 'Não sei'], 'fretados');
-                        } else if (previousMenu === 'Fretadão') {
-                            addMessage('Qual é a sua linha do Fretadão?', 'received');
-                            showOptions(['Linha 6517', 'Linha 6518', 'Linha 6519', 'Linha 6523', 'Linha 6543', 'Linha 6544', 'Linha 6564', 'Não sei minha Linha'], 'fretadao-linhas');
-                        } else if (previousMenu === 'Aplicativos') {
-                            addMessage('Qual aplicativo você precisa de ajuda?', 'received');
-                            showOptions(['Aplicativo Fretadão', 'My Aghora', 'Holerite Online', 'Mercado Pago'], 'aplicativos');
-                        } else if (previousMenu === 'Ferramentas') {
-                            addMessage('Qual ferramenta você precisa acessar?', 'received');
-                            showOptions(['Abrir ROS', 'Abrir ROF'], 'ferramentas');
-                        } else if (previousMenu.startsWith('app-')) {
-                            const appName = previousMenu.replace('app-', '').replace('-', ' ');
-                            addMessage(`Para qual sistema operacional você precisa do ${appName}?`, 'received');
-                            showOptions(['Android', 'iPhone'], previousMenu);
-                        } else if (previousMenu === 'Reportar Erro') {
-                            addMessage('Sobre qual serviço você gostaria de reportar um erro?', 'received');
-                            showOptions(['Reportar Erro Fretado', 'Reportar Erro MeliAssistente T7'], 'reportar-erro');
-                        } else if (previousMenu.startsWith('Linha')) {
-                            selectedLine = previousMenu;
-                            addMessage(`Você selecionou a ${previousMenu}. O que você gostaria de saber?`, 'received');
-                            showOptions([`Grupo do WhatsApp do Fretado (${getLineNumber(previousMenu)})`, `Rota do Fretado (${getLineNumber(previousMenu)})`], '极nha-opcoes');
-                        }
-                    }, 1000);
-                }
-            }
-            
-            // Função para ir diretamente para o menu principal
-            function goToMainMenu() {
-                // Remove os botões de opção atuais
-                const optionsContainer = document.getElementById('current-options');
-                if (optionsContainer) {
-                    optionsContainer.remove();
-                }
-                
-                // Simula o bot digitando
-                showTypingIndicator();
-                
-                // Vai para o menu principal
-                setTimeout(() => {
-                    addMessage('Retornando ao menu principal...', 'received');
-                    showMainMenu();
-                }, 1000);
-            }
-            
-            // Atualiza a visibilidade do botão de voltar no header
-            function updateBackButton() {
-                if (menuHistory.length > 1) {
-                    headerBackButton.style.display = 'block';
-                } else {
-                    headerBackButton.style.display = 'none';
-                }
-            }
-            
-            // Configura o botão de voltar do header
-            headerBackButton.addEventListener('click', goBack);
-            
-            // Configura o botão fixo do menu inicial
-            fixedMainMenuButton.addEventListener('click', goToMainMenu);
-            
-            // Função para mostrar indicador de digitação
-            function showTypingIndicator() {
-                const typingDiv = document.createElement('div');
-                typingDiv.classList.add('typing-indicator');
-                
-                for (let i = 0; i < 3; i++) {
-                    const dot = document.createElement('div');
-                    dot.classList.add('typing-dot');
-                    typingDiv.appendChild(dot);
-                }
-                
-                chatMessages.appendChild(typingDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-        });
+        }
+        
+        function openTutorial(url) {
+            window.open(url, '_blank');
+        }
+        
+        function openROF() {
+            window.open('https://docs.google.com/forms/d/e/1FAIpQLSd23C9jU8hrQNLp0NiRGO36ppQmP15ImFSvKUn_Jeiby6AKCg/viewform', '_blank');
+        }
+        
+        function openROS() {
+            window.open('https://www.appsheet.com/start/d33841e5-242f-42f7-b5c4-c6480895c4d1', '_blank');
+        }
+        
+        function closeModal() {
+            document.getElementById('info-modal').style.display = 'none';
+        }
     </script>
 </body>
 </html>
