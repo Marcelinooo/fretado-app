@@ -1,455 +1,747 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Linhas de Fretado | Premium</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    :root {
-      --primary: #0054a6;
-      --secondary: #ffd700;
-      --dark: #003366;
-      --light: #f8f9fa;
-      --accent: #fff159;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: linear-gradient(135deg, var(--light) 0%, #e6f0ff 100%);
-      min-height: 100vh;
-      color: #333;
-    }
-    
-    header {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
-      color: white;
-      text-align: center;
-      padding: 25px 0;
-      font-size: 2rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    header::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: linear-gradient(90deg, var(--secondary), rgba(255, 215, 0, 0.5));
-    }
-    
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 30px 20px;
-    }
-    
-    .lines-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
-    }
-    
-    .app-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin-top: 40px;
-      max-width: 300px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    
-    .download-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 15px 25px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      color: white;
-    }
-    
-    .download-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
-    }
-    
-    .download-btn i {
-      margin-right: 10px;
-      font-size: 1.5rem;
-    }
-    
-    .playstore {
-      background: linear-gradient(135deg, #0f9d58 0%, #1e8e3e 100%);
-    }
-    
-    .appstore {
-      background: linear-gradient(135deg, #007AFF 0%, #0A59C5 100%);
-    }
-    
-    .contact-btn {
-      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-    }
-    
-    .line-card {
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 6px 15px rgba(0, 84, 166, 0.1);
-      transition: all 0.3s ease;
-      cursor: pointer;
-      position: relative;
-      z-index: 1;
-    }
-    
-    .line-card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: -1;
-    }
-    
-    .line-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 20px rgba(0, 84, 166, 0.15);
-    }
-    
-    .line-card:hover::before {
-      opacity: 1;
-    }
-    
-    .line-card:hover .line-number {
-      color: white;
-    }
-    
-    .line-card:hover .line-icon {
-      transform: scale(1.1);
-      color: var(--secondary);
-    }
-    
-    .line-number {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--primary);
-      text-align: center;
-      padding: 20px 10px 10px;
-      transition: color 0.3s ease;
-    }
-    
-    .line-icon {
-      display: block;
-      text-align: center;
-      font-size: 2.5rem;
-      color: var(--primary);
-      margin-bottom: 15px;
-      transition: all 0.3s ease;
-    }
-    
-    .line-details {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(5px);
-      z-index: 100;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-    
-    .line-details.active {
-      opacity: 1;
-      pointer-events: all;
-    }
-    
-    .detail-card {
-      background: white;
-      border-radius: 16px;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-      overflow: hidden;
-      transform: translateY(20px);
-      transition: transform 0.4s ease;
-    }
-    
-    .line-details.active .detail-card {
-      transform: translateY(0);
-    }
-    
-    .detail-header {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
-      color: white;
-      padding: 25px;
-      text-align: center;
-      position: relative;
-    }
-    
-    .detail-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-    }
-    
-    .detail-close {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: rgba(255, 255, 255, 0.2);
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    
-    .detail-close:hover {
-      background: rgba(255, 255, 255, 0.3);
-      transform: rotate(90deg);
-    }
-    
-    .detail-content {
-      padding: 30px;
-    }
-    
-    .action-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
-      color: white;
-      padding: 15px 25px;
-      border-radius: 10px;
-      margin-bottom: 15px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 8px rgba(0, 84, 166, 0.2);
-    }
-    
-    .action-button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 15px rgba(0, 84, 166, 0.3);
-    }
-    
-    .action-button i {
-      margin-right: 10px;
-      font-size: 1.2rem;
-    }
-    
-    .whatsapp-btn {
-      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-      box-shadow: 0 4px 8px rgba(37, 211, 102, 0.3);
-    }
-    
-    .whatsapp-btn:hover {
-      box-shadow: 0 8px 15px rgba(37, 211, 102, 0.4);
-    }
-    
-    .map-btn {
-      background: linear-gradient(135deg, #4285F4 0%, #3367D6 100%);
-      box-shadow: 0 4px 8px rgba(66, 133, 244, 0.3);
-    }
-    
-    .map-btn:hover {
-      box-shadow: 0 8px 15px rgba(66, 133, 244, 0.4);
-    }
-    
-    .back-btn {
-      background: #6c757d;
-      box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
-      cursor: pointer;
-    }
-    
-    .back-btn:hover {
-      box-shadow: 0 8px 15px rgba(108, 117, 125, 0.4);
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    
-    .container {
-      animation: fadeIn 0.6s ease forwards;
-    }
-    
-    @media (max-width: 600px) {
-      .lines-grid {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      }
-      
-      .line-number {
-        font-size: 1.5rem;
-      }
-      
-      .line-icon {
-        font-size: 2rem;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeliAssistente T7 - Suporte Direto</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-yellow: #ffe600;
+            --primary-blue: #2d3277;
+            --light-bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-dark: #2d3277;
+            --text-light: #6c757d;
+            --border-radius: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: var(--light-bg);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-dark);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            width: 70px;
+            height: 70px;
+            background: var(--primary-blue);
+            color: var(--primary-yellow);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0 auto 15px;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--primary-blue);
+        }
+        
+        .header p {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+        
+        .main-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .main-button {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: var(--shadow);
+        }
+        
+        .main-button:hover {
+            background: var(--primary-blue);
+            color: var(--primary-yellow);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .main-button i {
+            font-size: 20px;
+        }
+        
+        .back-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            background: #f1f1f1;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 15px;
+        }
+        
+        .back-button:hover {
+            background: #e5e5e5;
+        }
+        
+        .back-button i {
+            margin-right: 8px;
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+        
+        .option-button {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: white;
+            border: 1px solid #eaeaea;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .option-button:hover {
+            background: var(--primary-blue);
+            color: var(--primary-yellow);
+            border-color: var(--primary-blue);
+        }
+        
+        .option-button i {
+            font-size: 16px;
+        }
+        
+        .whatsapp-button {
+            background: #25D366;
+            color: white;
+            border: none;
+        }
+        
+        .whatsapp-button:hover {
+            background: #128C7E;
+            color: white;
+        }
+        
+        .route-button {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+        }
+        
+        .route-button:hover {
+            background: #1a1f52;
+            color: white;
+        }
+        
+        .contact-button {
+            background: #ff7b00;
+            color: white;
+            border: none;
+        }
+        
+        .contact-button:hover {
+            background: #e06a00;
+            color: white;
+        }
+        
+        .error-button {
+            background: #ff4444;
+            color: white;
+            border: none;
+        }
+        
+        .error-button:hover {
+            background: #cc0000;
+            color: white;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--text-light);
+            font-size: 12px;
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: var(--primary-blue);
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .modal-button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .modal-button.confirm {
+            background: var(--primary-blue);
+            color: white;
+        }
+        
+        .modal-button.cancel {
+            background: #f1f1f1;
+            color: var(--text-dark);
+        }
+        
+        .tutorial-button {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: white;
+            border: 1px solid #eaeaea;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+        
+        .tutorial-button:hover {
+            background: var(--primary-blue);
+            color: var(--primary-yellow);
+            border-color: var(--primary-blue);
+        }
+        
+        .tutorial-button i {
+            font-size: 16px;
+            margin-left: 10px;
+        }
+        
+        .contact-fretadao-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            background: #25D366;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 15px;
+            gap: 8px;
+        }
+        
+        .contact-fretadao-button:hover {
+            background: #128C7E;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-  <header id="main-header">
-    <div class="logo">Linhas de Fretado</div>
-  </header>
-  
-  <div class="container">
-    <div class="lines-grid" id="lines-list">
-      <!-- Linhas serão adicionadas via JavaScript -->
-    </div>
-    
-    <div class="app-buttons">
-      <a href="https://play.google.com/store/search?q=FRETAD%C3%83O&c=apps&hl=pt_BR" class="download-btn playstore" target="_blank">
-        <i class="fab fa-google-play"></i> Baixar para Android
-      </a>
-      
-      <a href="https://apps.apple.com/br/app/fretad%C3%A3o/id958725031" class="download-btn appstore" target="_blank">
-        <i class="fab fa-apple"></i> Baixar para iPhone
-      </a>
-      
-      <a href="https://wa.me/5511996867473" class="download-btn contact-btn" target="_blank">
-        <i class="fab fa-whatsapp"></i> Contato Fretadão
-      </a>
-    </div>
-  </div>
-  
-  <div class="line-details" id="line-details">
-    <div class="detail-card">
-      <div class="detail-header">
-        <div class="detail-title" id="line-title"></div>
-        <div class="detail-close" id="close-details">
-          <i class="fas fa-times"></i>
+    <div class="container">
+        <!-- Página Inicial -->
+        <div class="page active" id="main-page">
+            <div class="header">
+                <div class="logo">ML</div>
+                <h1>MeliAssistente T7</h1>
+                <p>Seu portal de suporte rápido e direto</p>
+            </div>
+            
+            <div class="main-menu">
+                <button class="main-button" onclick="showPage('fretados-page')">
+                    <span><i class="fas fa-bus"></i> Fretados</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                <button class="main-button" onclick="showPage('sistema-page')">
+                    <span><i class="fas fa-mobile-alt"></i> Aplicativos</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                <button class="main-button" onclick="showPage('tutoriais-page')">
+                    <span><i class="fas fa-book"></i> Tutoriais</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                <button class="main-button error-button" onclick="showPage('ocorrencias-page')">
+                    <span><i class="fas fa-exclamation-triangle"></i> Reportar Ocorrência</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <div class="footer">
+                <p>MeliAssistente T7 &copy; 2025</p>
+            </div>
         </div>
-      </div>
-      <div class="detail-content">
-        <a class="action-button whatsapp-btn" id="whatsapp-link" target="_blank">
-          <i class="fab fa-whatsapp"></i> Grupo do WhatsApp
-        </a>
-        <a class="action-button map-btn" id="map-link" target="_blank">
-          <i class="fas fa-map-marked-alt"></i> Ver Trajeto
-        </a>
-        <div class="action-button back-btn" id="back-button">
-          <i class="fas fa-arrow-left"></i> Voltar
+        
+        <!-- Página de Fretados -->
+        <div class="page" id="fretados-page">
+            <button class="back-button" onclick="showPage('main-page')">
+                <i class="fas fa-arrow-left"></i> Voltar ao Menu Principal
+            </button>
+            
+            <div class="header">
+                <h1>Fretados</h1>
+                <p>Selecione sua opção de fretado</p>
+            </div>
+            
+            <div class="options-grid">
+                <button class="option-button" onclick="showModal('Shift', 'Ainda não temos informações disponíveis das linhas Shift.')">
+                    <span><i class="fas fa-shuttle-van"></i> Shift</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                <button class="option-button" onclick="showPage('linhas-page')">
+                    <span><i class="fas fa-bus-alt"></i> Fretadão</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                <button class="option-button contact-button" onclick="showModal('Contato', 'Entre em contato com seu TL.')">
+                    <span><i class="fas fa-headset"></i> Não sei meu fretado</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
         </div>
-      </div>
+        
+        <!-- Página de Linhas do Fretadão -->
+        <div class="page" id="linhas-page">
+            <button class="back-button" onclick="showPage('fretados-page')">
+                <i class="fas fa-arrow-left"></i> Voltar para Fretados
+            </button>
+            
+            <div class="header">
+                <h1>Linhas do Fretadão</h1>
+                <p>Selecione sua linha</p>
+            </div>
+            
+            <div class="options-grid">
+                <button class="option-button" onclick="selectLine('6517')">
+                    <span>Linha 6517</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="option-button" onclick="selectLine('6518')">
+                    <span>Linha 6518</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="option-button" onclick="selectLine('6519')">
+                    <span>Linha 6519</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="option-button" onclick="selectLine('6523')">
+                    <span>Linha 6523</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="option-button" onclick="selectLine('6543')">
+                    <span>Linha 6543</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="option-button" onclick="selectLine('6544')">
+                    <span>Linha 6544</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="option-button" onclick="selectLine('6564')">
+                    <span>Linha 6564</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <button class="contact-fretadao-button" onclick="contactFretadao()">
+                <i class="fab fa-whatsapp"></i> Falar com o Fretadão
+            </button>
+        </div>
+        
+        <!-- Página de Ações da Linha -->
+        <div class="page" id="linha-actions-page">
+            <button class="back-button" onclick="showPage('linhas-page')">
+                <i class="fas fa-arrow-left"></i> Voltar para Linhas
+            </button>
+            
+            <div class="header">
+                <h1>Linha <span id="selected-line-text"></span></h1>
+                <p>O que você precisa?</p>
+            </div>
+            
+            <div class="options-grid">
+                <button class="option-button whatsapp-button" onclick="openWhatsApp()">
+                    <span><i class="fab fa-whatsapp"></i> Grupo do WhatsApp</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                <button class="option-button route-button" onclick="openRoute()">
+                    <span><i class="fas fa-route"></i> Ver Rota do Fretado</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Página de Seleção de Sistema Operacional -->
+        <div class="page" id="sistema-page">
+            <button class="back-button" onclick="showPage('main-page')">
+                <i class="fas fa-arrow-left"></i> Voltar ao Menu Principal
+            </button>
+            
+            <div class="header">
+                <h1>Aplicativos</h1>
+                <p>Selecione seu sistema operacional</p>
+            </div>
+            
+            <div class="options-grid">
+                <button class="option-button" onclick="showPage('android-page')">
+                    <span><i class="fab fa-android"></i> Android</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                <button class="option-button" onclick="showPage('iphone-page')">
+                    <span><i class="fab fa-apple"></i> iPhone</span>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Página de Aplicativos Android -->
+        <div class="page" id="android-page">
+            <button class="back-button" onclick="showPage('sistema-page')">
+                <i class="fas fa-arrow-left"></i> Voltar para Sistemas
+            </button>
+            
+            <div class="header">
+                <h1>Aplicativos para Android</h1>
+                <p>Selecione o aplicativo desejado</p>
+            </div>
+            
+            <div class="options-grid">
+                <button class="option-button" onclick="downloadApp('Fretadão', 'Android')">
+                    <span>Fretadão</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="option-button" onclick="downloadApp('My Aghora', 'Android')">
+                    <span>My Aghora</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="option-button" onclick="downloadApp('Holerite Online', 'Android')">
+                    <span>Holerite Online</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="option-button" onclick="downloadApp('Mercado Pago', 'Android')">
+                    <span>Mercado Pago</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Página de Aplicativos iPhone -->
+        <div class="page" id="iphone-page">
+            <button class="back-button" onclick="showPage('sistema-page')">
+                <i class="fas fa-arrow-left"></i> Voltar para Sistemas
+            </button>
+            
+            <div class="header">
+                <h1>Aplicativos para iPhone</h1>
+                <p>Selecione o aplicativo desejado</p>
+            </div>
+            
+            <div class="options-grid">
+                <button class="option-button" onclick="downloadApp('Fretadão', 'iPhone')">
+                    <span>Fretadão</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="option-button" onclick="downloadApp('My Aghora', 'iPhone')">
+                    <span>My Aghora</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="option-button" onclick="downloadApp('Holerite Online', 'iPhone')">
+                    <span>Holerite Online</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="option-button" onclick="downloadApp('Mercado Pago', 'iPhone')">
+                    <span>Mercado Pago</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Página de Tutoriais -->
+        <div class="page" id="tutoriais-page">
+            <button class="back-button" onclick="showPage('main-page')">
+                <i class="fas fa-arrow-left"></i> Voltar ao Menu Principal
+            </button>
+            
+            <div class="header">
+                <h1>Tutoriais</h1>
+                <p>Selecione o tutorial desejado</p>
+            </div>
+            
+            <div class="options-grid">
+                <button class="tutorial-button" onclick="openTutorial('https://docs.google.com/presentation/d/13cEWwJD3fihEp60g_FqS5VOSNdWXA_k7PBh18hUQdbw/edit?usp=sharing')">
+                    <span>PAGAMENTO & BENEFÍCIOS</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="tutorial-button" onclick="openTutorial('https://docs.google.com/presentation/d/1PuhrQ0rrBoKd1b8MbGTzzAfej2TG_qDq6Z_ew0oLQes/edit?usp=sharing')">
+                    <span>MY AHGORA & PONTO</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="tutorial-button" onclick="openTutorial('https://docs.google.com/presentation/d/1vfg-UxGQXr9VtbCLlxuGRcLU11O-w4ErSs6do7XgjZs/edit?usp=sharing')">
+                    <span>PEOPLE CHAT</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="tutorial-button" onclick="openTutorial('https://docs.google.com/presentation/d/1OF4_3O9PkOIOq6U9KngBK9sWONJShmx__7ERj3eXhYs/edit?usp=sharing')">
+                    <span>FRETADO</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="tutorial-button" onclick="openTutorial('https://docs.google.com/presentation/d/1vfg-UxGQXr9VtbCLlxuGRcLU11O-w4ErSs6do7XgjZs/edit?usp=sharing')">
+                    <span>ACESSO AO REFEITÓRIO</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="tutorial-button" onclick="openTutorial('https://docs.google.com/presentation/d/184xbCHQhjabquWbBlNcijWXH7rjyMe8S1XcX9ZhUMYE/edit?usp=sharing')">
+                    <span>TRILHA DE CARREIRA NO MELI</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="tutorial-button" onclick="openTutorial('https://docs.google.com/presentation/d/1ApsUFSRs4trv8MhfT_CZXwBs8S2XEi4MSMi7-URyj-s/edit?usp=sharing')">
+                    <span>REGRAS DE SEGURANÇA + SETORES DO CAD</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Página de Reportar Ocorrências -->
+        <div class="page" id="ocorrencias-page">
+            <button class="back-button" onclick="showPage('main-page')">
+                <i class="fas fa-arrow-left"></i> Voltar ao Menu Principal
+            </button>
+            
+            <div class="header">
+                <h1>Reportar Ocorrência</h1>
+                <p>Selecione o tipo de ocorrência</p>
+            </div>
+            
+            <div class="options-grid">
+                <button class="option-button error-button" onclick="openROF()">
+                    <span><i class="fas fa-bus"></i> ROF - Reporte de Ocorrências do Fretado</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+                
+                <button class="option-button error-button" onclick="openROS()">
+                    <span><i class="fas fa-shield-alt"></i> ROS - Reporte de Ocorrência de Segurança</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Modal de Informação -->
+        <div class="modal" id="info-modal">
+            <div class="modal-content">
+                <h3 class="modal-title" id="modal-title">Informação</h3>
+                <p id="modal-message">Mensagem de informação.</p>
+                <div class="modal-buttons">
+                    <button class="modal-button confirm" onclick="closeModal()">OK</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <script>
-    // Dados das linhas
-    const linesData = {
-      '6517': {
-        whatsapp: 'https://chat.whatsapp.com/CwBxAXs530J6kWmsyRy5Y3?mode=ac_t',
-        icon: 'bus'
-      },
-      '6518': {
-        whatsapp: 'https://chat.whatsapp.com/CO5qY99AWlWBYmQ78VTHE4',
-        icon: 'bus'
-      },
-      '6519': {
-        whatsapp: 'https://chat.whatsapp.com/IHvPbrPurpTC0iKbZvvbCq?mode=ac_t',
-        icon: 'bus'
-      },
-      '6523': {
-        whatsapp: 'https://chat.whatsapp.com/EHjGgDuVX3aALnJMcn31MY?mode=ac_t',
-        icon: 'bus'
-      },
-      '6543': {
-        whatsapp: 'https://chat.whatsapp.com/BsHr4OdPJv51afXS0pw3dM',
-        icon: 'bus'
-      },
-      '6544': {
-        whatsapp: 'https://chat.whatsapp.com/DoACBzZgT5uJ1hAvOR5YbQ?mode=ac_t',
-        icon: 'bus'
-      },
-      '6564': {
-        whatsapp: 'https://chat.whatsapp.com/EPXKvnaxlFiCIhKysjkrbC?mode=ac_t',
-        icon: 'bus'
-      }
-    };
-
-    // Elementos da página
-    const linesList = document.getElementById('lines-list');
-    const lineDetails = document.getElementById('line-details');
-    const lineTitle = document.getElementById('line-title');
-    const whatsappLink = document.getElementById('whatsapp-link');
-    const mapLink = document.getElementById('map-link');
-    const backButton = document.getElementById('back-button');
-    const closeDetails = document.getElementById('close-details');
-
-    // Cria os cards das linhas
-    function createLineCards() {
-      linesList.innerHTML = '';
-      
-      Object.keys(linesData).forEach(lineNumber => {
-        const line = linesData[lineNumber];
+    <script>
+        // Mapeamento de links do WhatsApp para cada linha
+        const whatsappLinks = {
+            '6517': 'https://chat.whatsapp.com/CwBxAXs530J6kWmsyRy5Y3?mode=ac_t',
+            '6518': 'https://chat.whatsapp.com/CO5qY99AWlWBYmQ78VTHE4', 
+            '6519': 'https://chat.whatsapp.com/IHvPbrPurpTC0iKbZvvbCq?mode=ac_t',
+            '6523': 'https://chat.whatsapp.com/EHjGgDuVX3aALnJMcn31MY?mode=ac_t',
+            '6543': 'https://chat.whatsapp.com/BsHr4OdPJv51afXS0pw3dM',
+            '6544': 'https://chat.whatsapp.com/DoACBzZgT5uJ1hAvOR5YbQ?mode=ac_t',
+            '6564': 'https://chat.whatsapp.com/EPXKvnaxlFiCIhKysjkrbC?mode=ac_t'
+        };
         
-        const lineCard = document.createElement('div');
-        lineCard.className = 'line-card';
-        lineCard.innerHTML = `
-          <div class="line-number">Linha ${lineNumber}</div>
-          <i class="fas fa-${line.icon} line-icon"></i>
-        `;
+        // Links para aplicativos
+        const appLinks = {
+            'Fretadão': {
+                'Android': 'https://play.google.com/store/search?q=FRETAD%C3%83O&c=apps&hl=pt_BR',
+                'iPhone': 'https://apps.apple.com/br/app/fretad%C3%A3o/id958725031'
+            },
+            'My Aghora': {
+                'Android': 'https://play.google.com/store/search?q=my+ahgora&c=apps&hl=pt_BR',
+                'iPhone': 'https://apps.apple.com/br/app/my-ahgora/id1502293191'
+            },
+            'Holerite Online': {
+                'Android': 'https://play.google.com/store/apps/details?id=br.com.wb2b.holeriteonline&hl=pt_BR',
+                'iPhone': 'https://apps.apple.com/br/app/holeriteonline-wb2b-procprint/id1234737064'
+            },
+            'Mercado Pago': {
+                'Android': 'https://play.google.com/store/search?q=mercado%20pago&c=apps&hl=pt_BR',
+                'iPhone': 'https://apps.apple.com/br/app/mercado-pago-banco-digital/id925436649'
+            }
+        };
         
-        lineCard.addEventListener('click', () => showLineDetails(lineNumber));
-        linesList.appendChild(lineCard);
-      });
-    }
-
-    // Mostra os detalhes de uma linha
-    function showLineDetails(lineNumber) {
-      const lineData = linesData[lineNumber];
-      
-      lineTitle.textContent = `Linha ${lineNumber}`;
-      whatsappLink.href = lineData.whatsapp;
-      mapLink.href = `https://www.fretadao.com.br/fretado/${lineNumber}#modal-iframe`;
-      
-      lineDetails.classList.add('active');
-    }
-
-    // Volta para a lista de linhas
-    function showLinesList() {
-      lineDetails.classList.remove('active');
-    }
-
-    // Event Listeners
-    backButton.addEventListener('click', showLinesList);
-    closeDetails.addEventListener('click', showLinesList);
-
-    // Inicializa a página
-    createLineCards();
-  </script>
+        let selectedLine = '';
+        
+        function showPage(pageId) {
+            // Oculta todas as páginas
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Mostra a página solicitada
+            document.getElementById(pageId).classList.add('active');
+            
+            // Rolagem para o topo
+            window.scrollTo(0, 0);
+        }
+        
+        function showModal(title, message) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-message').textContent = message;
+            document.getElementById('info-modal').style.display = 'flex';
+        }
+        
+        function selectLine(line) {
+            selectedLine = line;
+            document.getElementById('selected-line-text').textContent = line;
+            showPage('linha-actions-page');
+        }
+        
+        function openWhatsApp() {
+            const link = whatsappLinks[selectedLine];
+            if (link) {
+                window.open(link, '_blank');
+            } else {
+                alert('Link do WhatsApp não encontrado para esta linha.');
+            }
+        }
+        
+        function openRoute() {
+            const routeLink = `https://www.fretadao.com.br/fretado/${selectedLine}#modal-iframe`;
+            window.open(routeLink, '_blank');
+        }
+        
+        function contactFretadao() {
+            window.open('https://wa.me/5511996867473', '_blank');
+        }
+        
+        function downloadApp(app, os) {
+            const link = appLinks[app] && appLinks[app][os];
+            if (link) {
+                window.open(link, '_blank');
+            } else {
+                alert(`Link para ${app} na ${os} Store não encontrado.`);
+            }
+        }
+        
+        function openTutorial(url) {
+            window.open(url, '_blank');
+        }
+        
+        function openROF() {
+            window.open('https://docs.google.com/forms/d/e/1FAIpQLSd23C9jU8hrQNLp0NiRGO36ppQmP15ImFSvKUn_Jeiby6AKCg/viewform', '_blank');
+        }
+        
+        function openROS() {
+            window.open('https://www.appsheet.com/start/d33841e5-242f-42f7-b5c4-c6480895c4d1', '_blank');
+        }
+        
+        function closeModal() {
+            document.getElementById('info-modal').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
